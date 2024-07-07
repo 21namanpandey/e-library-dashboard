@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/http/api";
+import { useTokenStore } from "@/store";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { useRef } from "react";
@@ -18,14 +19,17 @@ import { Link, useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const navigate = useNavigate();
 
+  const setToken = useTokenStore((state) => state.setToken);
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   // mutation
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (response) => {
       console.log("login succesfull...");
+      setToken(response.data.accessToken);
       navigate("/dashboard/home");
     },
   });
@@ -48,7 +52,11 @@ const LoginPage = () => {
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
             Enter your email below to login to your account. <br />
-            {mutation.isError && <span className="text-red-500 text-sm ">{mutation.error.message}</span>}
+            {mutation.isError && (
+              <span className="text-red-500 text-sm ">
+                {mutation.error.message}
+              </span>
+            )}
             {mutation.isPending && <div>Loading...</div>}
           </CardDescription>
         </CardHeader>
