@@ -107,7 +107,7 @@ const BooksPage = () => {
                                         </TableCell>
                                         <TableCell className="font-medium">{book.title}</TableCell>
                                         <TableCell>
-                                            <Badge variant="outline">{book.genre}</Badge>
+                                            {book.genre}
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">
                                             {book.author.name}
