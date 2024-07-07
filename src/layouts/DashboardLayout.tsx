@@ -35,11 +35,15 @@ import { Input } from "@/components/ui/input";
 import { useTokenStore } from "@/store";
 
 const DashboardLayout = () => {
-  const token = useTokenStore((state) => state.token);
+  const { token, setToken } = useTokenStore((state) => state);
 
-  if (token === '') {
-    return <Navigate to={"/auth/login"} replace/>;
+  if (token === "") {
+    return <Navigate to={"/auth/login"} replace />;
   }
+  const handleLogout = () => {
+    console.log('loging out ...')
+    setToken("");
+  };
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -195,7 +199,11 @@ const DashboardLayout = () => {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button onClick={handleLogout} variant={"default"}>
+                  Logout
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
